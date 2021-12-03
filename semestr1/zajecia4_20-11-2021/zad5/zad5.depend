@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1638441425 source:c:\users\lukas\desktop\zajêcia 4 - 20.11.2021\zad5\main.cpp
+	<iostream>
+	<array>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+

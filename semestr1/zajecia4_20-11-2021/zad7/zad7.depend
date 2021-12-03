@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1638460292 source:c:\users\lukas\desktop\zajêcia 4 - 20.11.2021\zad7\main.cpp
+	<iostream>
+	<array>
+	<vector>
+

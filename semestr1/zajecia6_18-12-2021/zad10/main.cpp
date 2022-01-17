@@ -15,22 +15,41 @@ struct group
 {
     string nazwa;
     vector<student> studenci;
+    float srednia;
 };
 
-void add_student_to_group(group gr, student st)
+void add_student_to_group(group &gr, student st)
 {
     gr.studenci.push_back(st);
 }
 
-/* string best_groups_name(vector<group> gr)
+string best_groups_name(vector<group> gr)
 {
+    group best = gr.at(0);
 
-} */
+    /* grupy w wektorze:
+        gr.at(0) - grp1
+        gr.at(1) - grp2
+        gr.at(2) - grp3 */
+
+    if (gr.at(0).srednia > gr.at(1).srednia)
+    {
+        best = gr.at(0);
+    }
+    if (gr.at(1).srednia > gr.at(0).srednia)
+    {
+        best = gr.at(1);
+    }
+    if (gr.at(2).srednia > best.srednia)
+    {
+        best = gr.at(2);
+    }
+    return best.nazwa;
+}
 
 float student_grades_average(student st)
 {
-    float sum = 0;
-    float average = 0;
+    float sum = 0, average = 0;
 
     for (int i = 0; i < st.grades.size(); i++)
     {
@@ -38,6 +57,20 @@ float student_grades_average(student st)
     }
 
     average = sum / st.grades.size();
+
+    return average;
+}
+
+float group_grades_average(group gr)
+{
+    float sum = 0, average = 0;
+
+    for (int i = 0; i < gr.studenci.size(); i++)
+    {
+        sum = sum + gr.studenci.at(i).average;
+    }
+
+    average = sum / gr.studenci.size();
 
     return average;
 }
@@ -97,24 +130,23 @@ int main()
 
     vector<group> grupy = {grp1, grp2, grp3};
 
-    cout << "Przed:" << endl;
+    cout << "Przed dodaniem stud7 do grp1:" << endl;
     for (int i = 0; i < grp1.studenci.size(); i++)
     {
-        cout << grp1.studenci.at(i).name;
+        cout << grp1.studenci.at(i).name << " ";
     }
-    cout << endl;
+    cout << endl << endl;
 
     add_student_to_group(grp1 ,stud7);
 
-    cout << "Po:" << endl;
+    cout << "Po dodaniu stud7 do grp1:" << endl;
     for (int i = 0; i < grp1.studenci.size(); i++)
     {
-        cout << grp1.studenci.at(i).name;
+        cout << grp1.studenci.at(i).name << " ";
     }
+    cout << endl << endl;
 
-    //best_groups_name(grupy);
-
-    cout << "stud 1 avg: " << stud1.average << endl;
+    cout << "Nazwa najlepszej grupy: " << best_groups_name(grupy) << endl;
 
     return 0;
 }

@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -15,7 +15,7 @@ struct group
 {
     string nazwa;
     vector<student> studenci;
-    float srednia;
+    float mediana_srednich;
 };
 
 void add_student_to_group(group &gr, student st)
@@ -23,27 +23,23 @@ void add_student_to_group(group &gr, student st)
     gr.studenci.push_back(st);
 }
 
-string best_groups_name(vector<group> gr)
+string best_groups_name(vector<group> gr_vec)
 {
-    group best = gr.at(0);
+    group best = gr_vec.at(0);
 
     /* grupy w wektorze:
         gr.at(0) - grp1
         gr.at(1) - grp2
         gr.at(2) - grp3 */
 
-    if (gr.at(0).srednia > gr.at(1).srednia)
+    for (int i = 0; i < gr_vec.size(); i++)
     {
-        best = gr.at(0);
+        if (gr_vec.at(i).mediana_srednich > best.mediana_srednich)
+        {
+            best = gr_vec.at(i);
+        }
     }
-    if (gr.at(1).srednia > gr.at(0).srednia)
-    {
-        best = gr.at(1);
-    }
-    if (gr.at(2).srednia > best.srednia)
-    {
-        best = gr.at(2);
-    }
+
     return best.nazwa;
 }
 
@@ -61,18 +57,55 @@ float student_grades_average(student st)
     return average;
 }
 
-float group_grades_average(group gr)
+float group_averages_median(group gr)
 {
-    float sum = 0, average = 0;
+    float median = 0;
 
+    // Utworzenie wektora ze srednimi studentow do posortowania
+
+    vector<float> students_averages = {};
     for (int i = 0; i < gr.studenci.size(); i++)
     {
-        sum = sum + gr.studenci.at(i).average;
+        students_averages.push_back(gr.studenci.at(i).average);
     }
 
-    average = sum / gr.studenci.size();
+    cout << "srednie studentow w " << gr.nazwa << ": " << endl;
+    for (int i = 0; i < students_averages.size(); i++)
+    {
+        cout << students_averages.at(i) << " ";
+    }
+    cout << endl;
 
-    return average;
+    // Sortowanie srednich
+
+    for (int i = 0; i < students_averages.size(); i++)
+    {
+        for (int j = 1; j < students_averages.size(); j++)
+        {
+            if (students_averages.at(j-1) > students_averages.at(j))
+            {
+                float tmp = 0;
+                tmp = students_averages.at(j-1);
+                students_averages.at(j-1) = students_averages.at(j);
+                students_averages.at(j) = tmp;
+            }
+        }
+    }
+
+    cout << "posortowane srednie studentow w " << gr.nazwa << ": " << endl;
+    for (int i = 0; i < students_averages.size(); i++)
+    {
+        cout << students_averages.at(i) << " ";
+    }
+    cout << endl;
+
+    // Obliczanie mediany
+
+    median = (students_averages.at((students_averages.size() - 1) / 2) + (students_averages.at(students_averages.size() / 2))) / 2;
+
+    cout << "mediana " << gr.nazwa << ": " << median << endl <<  endl;
+
+    return median;
 }
 
 int main()
@@ -130,7 +163,7 @@ int main()
 
     vector<group> grupy = {grp1, grp2, grp3};
 
-    cout << "Przed dodaniem stud7 do grp1:" << endl;
+    cout << "grupaA przed dodaniem stud7:" << endl;
     for (int i = 0; i < grp1.studenci.size(); i++)
     {
         cout << grp1.studenci.at(i).name << " ";
@@ -139,7 +172,11 @@ int main()
 
     add_student_to_group(grp1 ,stud7);
 
-    cout << "Po dodaniu stud7 do grp1:" << endl;
+    grp1.mediana_srednich = group_averages_median(grp1);
+    grp2.mediana_srednich = group_averages_median(grp2);
+    grp3.mediana_srednich = group_averages_median(grp3);
+
+    cout << "grupaA po dodaniu stud7:" << endl;
     for (int i = 0; i < grp1.studenci.size(); i++)
     {
         cout << grp1.studenci.at(i).name << " ";

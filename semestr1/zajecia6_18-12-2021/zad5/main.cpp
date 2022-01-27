@@ -1,53 +1,77 @@
 #include <iostream>
 #include <array>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
-int skalarny(int * wsk_n, int * wsk_X, int * wsk_Y) // oblicza iloczyn skalarny dwoch wektorow calkowitoliczbowych
+// Funkcja obliczajaca iloczyn skalarny dwoch wektorow calkowitoliczbowych
+
+int skalarny(int *wsk_n, int *wsk_X, int *wsk_Y)
 {
     int iloczyn = 0;
 
     for(int i = 0; i < *wsk_n; i++)
     {
-        iloczyn = iloczyn + (wsk_X[i] * wsk_Y[i]);
+        iloczyn = iloczyn + *(wsk_X + i) * *(wsk_Y + i);
     }
 
     return iloczyn;
 }
 
-/* void dane(int * wsk_n, int * wsk_tab) // wczytuje biezacy rozmiar tablicy
-{
+// Funkcja wczytujaca biezacy rozmiar tablicy i wypelniajaca ja liczbami losowymi
 
+void dane(int *wsk_n, int *wsk_tab)
+{
+    for (int i = 0; i < *wsk_n; i++)
+    {
+        wsk_tab[i] = rand()%9+1;
+    }
 }
 
-void wypelnij() // wypelnia tablice liczbami losowymi
-{
+// Funkcja wypisujaca zawartosc tablicy
 
-} */
-
-void wyswietl(int * wsk_n, int * wsk_tab) // wypisuje zawartosc tablicy
+void wyswietl(int *wsk_n, int *wsk_tab)
 {
     for(int i = 0; i < *wsk_n; i++)
     {
-        cout << *wsk_tab[i];
+        cout << wsk_tab[i];
     }
     cout << endl;
 }
 
 int main()
 {
-    int tab1[3] = {2,4,6}, tab2[3] = {3,5,7};
-    // int tab1[10] = {2,4,6,8,8,4,6,2,2,4}, tab2[10] = {3,5,7,9,9,7,5,3,3,5};
-    int tabsize;
-    int *wsk_tab1, *wsk_tab2, *wsk_tabsize;
-    tabsize = sizeof(tab1[3]);
-    wsk_tab1 = &tab1[3];
-    wsk_tab2 = &tab2[3];
-    wsk_tabsize = &tabsize;
+    int n = 0;
 
-    //cout << wsk_tabsize << " " << wsk_tab1 << " " << wsk_tab2 << endl;
-    cout << skalarny(wsk_tabsize, wsk_tab1, wsk_tab2);
+    cout << "Podaj rozmiar wektorow: ";
+    cin >> n;
+    while (n < 1 || n > 10)
+    {
+        cout << "Podaj prawidlowy rozmiar tablicy (1-10): ";
+        cin >> n;
+    }
+
+    int tab1[n], tab2[n];
+    int  *wsk_n, *wsk_tab1, *wsk_tab2;
+    wsk_n = &n;
+    wsk_tab1 = &tab1[n];
+    wsk_tab2 = &tab2[n];
     cout << endl;
+
+    srand(time(NULL));
+    dane(wsk_n, wsk_tab1);
+    dane(wsk_n, wsk_tab2);
+
+    cout << "Wektor 1:" << endl;
+    wyswietl(wsk_n, wsk_tab1);
+    cout << "Wektor 2:" << endl;
+    wyswietl(wsk_n, wsk_tab2);
+    cout << endl;
+
+    cout << "Iloczyn skalarny:" << endl;
+    cout << skalarny(wsk_n, wsk_tab1, wsk_tab2) << endl;
 
     return 0;
 }
